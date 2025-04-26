@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
+import { Link } from "react-router";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([
@@ -29,6 +30,8 @@ export default function AdminProductsPage() {
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
+    <Link to = "/admin/products/addProduct" className="absolute right-[25px] bottom-[25px]
+    text-[25px] bg-blue-500 hover:bg-blue-300 p-5 rounded-xl" ><FaPlus/></Link>
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Admin Products</h2>
 
       <div className="overflow-x-auto">
