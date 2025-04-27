@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function AddProductForm() {
     const [productId, setProductId] = useState("");
@@ -9,12 +11,45 @@ export default function AddProductForm() {
     const [lastPrice, setLastPrice] = useState("");
     const [stock, setStock] = useState("");
     const [description, setDescription] = useState("");
+    const navigate = useNavigate()
+
+   async function handleSubmit(){
+
+        const altNames = alternativeNames.split(",")
+        const imgUrls = imageUrls.split(",")
+
+        const product = {
+            productId : productId,
+            productName : productName,
+            altNames : altNames,
+            Images : imgUrls,
+            price : price,
+            lastPrice : lastPrice,
+            stock : stock,
+            description : description
+    }
+
+    const token = localStorage.getItem("token")
+
+   try{
+    const response = await axios.post("http://localhost:5000/api/products" ,product ,{
+        headers : {
+            Authorization : "Bearer" +token
+        }
+    })
+    console.log(response.data);
+    toast.success("product added successfuly")
+   }catch(err){
+    console.log(err)
+    toast.error("Failed to add product")
+   }
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-blue-300 py-8">
             <div className="bg-white p-6 rounded-2xl shadow-2xl w-[350px] max-h-[90vh] overflow-y-auto">
                 <h1 className="text-2xl font-bold text-center mb-6 text-black">Add Product</h1>
-                <form className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold mb-1">Product ID</label>
                         <input 
@@ -90,10 +125,11 @@ export default function AddProductForm() {
                     <button 
                         type="submit" 
                         className="bg-blue-500 text-white p-2 rounded-md mt-4 hover:bg-blue-600 transition duration-300"
+                    onClick={handleSubmit}
                     >
                         Add Product
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );
