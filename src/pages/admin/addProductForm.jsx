@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function AddProductForm() {
     const [productId, setProductId] = useState("");
@@ -37,6 +38,7 @@ export default function AddProductForm() {
             Authorization : "Bearer" +token
         }
     })
+    navigate("/admin/products")
     console.log(response.data);
     toast.success("product added successfuly")
    }catch(err){
