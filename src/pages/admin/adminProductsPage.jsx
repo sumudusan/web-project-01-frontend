@@ -2,31 +2,23 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState([
-    {
-      productId: "BEA1001",
-      productName: "Glow & Shine Face Serum",
-      altNames: ["Brightening Serum", "Vitamin C Serum", "Skin Glow Booster"],
-      images: [
-        "https://example.com/images/serum1.jpg",
-        "https://example.com/images/serum2.jpg",
-      ],
-      price: 1299,
-      lastPrice: 999,
-      stock: 150,
-      description:
-        "A lightweight, fast-absorbing serum infused with Vitamin C and Hyaluronic Acid that helps brighten skin tone, reduce dark spots, and deeply hydrate for a radiant glow.",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products").then((res) => {
-      setProducts(res.data);
-    });
+    axios.get("http://localhost:5000/api/products")
+      .then((res) => {
+        console.log("Fetched products:", res.data);  
+        setProducts(res.data.list);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch products:", error);
+        // Optional: You can set default products or show an error message
+      });
   }, []);
+  
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">

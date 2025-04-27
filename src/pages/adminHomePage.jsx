@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router"
+import { Link, Route, Routes } from "react-router-dom"
 import { BsBoxSeam, BsCart4, BsGraphUp, BsPerson } from "react-icons/bs"
 import AdminProductsPage from "./admin/adminProductsPage"
 import AddProductForm from "./admin/addProductForm"
