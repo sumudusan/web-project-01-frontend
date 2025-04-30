@@ -38,8 +38,9 @@ export default function AdminProductsPage() {
     text-[25px] bg-blue-500 hover:bg-blue-300 p-5 rounded-xl" ><FaPlus/></Link>
 
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Admin Products</h2>
-
-      <div className="overflow-x-auto">
+      {
+        productLoaded? 
+        <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg">
           <thead className="bg-gray-200">
             <tr>
@@ -93,7 +94,12 @@ export default function AdminProductsPage() {
             ))}
           </tbody>
         </table>
-      </div>
+        </div>:
+        <div className="w-full h-full flex justify-center items-center">
+           <div className="w-[60px] h-[60px] border-[2px] border-gray-200 border-b-blue-400 animate-spin rounded-full"></div>
+        </div>
+        
+    }
     </div>
   );
 }
