@@ -35,7 +35,7 @@ export default function AddProductForm() {
    try{
     const response = await axios.post("http://localhost:5000/api/products" ,product ,{
         headers : {
-            Authorization : "Bearer" +token
+          Authorization: `Bearer ${token}`
         }
     })
     navigate("/admin/products")

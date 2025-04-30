@@ -20,10 +20,10 @@ export default function LoginPage(){
                 }
                 toast.success("Login success")
                 localStorage.setItem("token" ,res.data.token)
-                if(res.data.user.type="admin"){
+                if(res.data.user.type =="admin"){
                     window.location.href = "/admin"
                 }else{
-                    window.localStorage.href = "/"
+                    window.location.href = "/"
                 }
             }
         )
