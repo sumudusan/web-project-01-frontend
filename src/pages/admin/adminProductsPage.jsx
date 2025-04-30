@@ -38,8 +38,11 @@ export default function AdminProductsPage() {
     text-[25px] bg-blue-500 hover:bg-blue-300 p-5 rounded-xl" ><FaPlus/></Link>
 
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Admin Products</h2>
-      {
-        productLoaded? 
+      {//this is make for show the page is loading or not. 
+      //we use the 'productLoaded' useState for it.
+      //if 'div 1' has loaded show it.else show 'div 2 '.
+        productLoaded?
+        //div 1 👇 
         <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg">
           <thead className="bg-gray-200">
@@ -95,6 +98,7 @@ export default function AdminProductsPage() {
           </tbody>
         </table>
         </div>:
+        //div 2 👇
         <div className="w-full h-full flex justify-center items-center">
            <div className="w-[60px] h-[60px] border-[2px] border-gray-200 border-b-blue-400 animate-spin rounded-full"></div>
         </div>
