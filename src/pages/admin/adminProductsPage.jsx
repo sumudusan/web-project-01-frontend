@@ -1,22 +1,34 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
+  const [productLoaded , setproductLoaded] = useState (false)
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products")
-      .then((res) => {
-        console.log("Fetched products:", res.data);  
-        setProducts(res.data.list);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch products:", error);
-        // Optional: You can set default products or show an error message
-      });
+
+    if(!productLoaded){
+      axios.get("http://localhost:5000/api/products" , {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },})
+        .then((res) => {
+          console.log("Fetched products:", res.data);  
+          setProducts(res.data.list);
+          setproductLoaded(true)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch products:", error);
+          // Optional: You can set default products or show an error message
+        });
+    }
+     
+    
+    
   }, []);
   
 
@@ -24,6 +36,7 @@ export default function AdminProductsPage() {
     <div className="p-4 bg-gray-100 min-h-screen">
     <Link to = "/admin/products/addProduct" className="absolute right-[25px] bottom-[25px]
     text-[25px] bg-blue-500 hover:bg-blue-300 p-5 rounded-xl" ><FaPlus/></Link>
+
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Admin Products</h2>
 
       <div className="overflow-x-auto">
@@ -51,6 +64,7 @@ export default function AdminProductsPage() {
                 <td className="py-3 px-4 border-b max-w-xs truncate">{product.description}</td>
                 <td className="py-3 px-4 border-b text-center">
                   <div className="flex justify-center gap-3 text-lg text-gray-600">
+                    
                     <button className="hover:text-red-600"
                     title="Delete"
                     onClick={()=>{alert(product.productId)
@@ -64,11 +78,13 @@ export default function AdminProductsPage() {
                       }).then((res)=>{
                         console.log(res.data);
                         toast.success("Product deleted successfully");
+                        setproductLoaded(false)
                       });
                     }}
+                    >
                       <FaTrash />
                     </button>
-                    <button className="hover:text-blue-600">
+                    <button className="hover:text-blue-600 ">
                       <FaPencil />
                     </button>
                   </div>
