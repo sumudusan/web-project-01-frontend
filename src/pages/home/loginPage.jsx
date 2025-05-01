@@ -42,3 +42,6 @@ export default function LoginPage(){
         </div>
     )
 }
+
+
+//http://localhost:5000/api/products
