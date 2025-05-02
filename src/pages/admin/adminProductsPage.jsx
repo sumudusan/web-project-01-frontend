@@ -12,7 +12,7 @@ export default function AdminProductsPage() {
   useEffect(() => {
 
     if(!productLoaded){
-      axios.get("http://localhost:5000/api/products" , {
+      axios.get(import.meta.env.VITE_BACKEND_URL+"/api/products" , {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },})
