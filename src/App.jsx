@@ -1,10 +1,11 @@
 import React from 'react'
-import HomePage from './Components/home'
+import "./index.css";
 import { BrowserRouter, Routes , Route } from 'react-router'
 import LoginPage from '../src/pages/home/loginPage'
 import SignInPage from './pages/signInPage'
-import AdminHomePage from './pages/adminHomePage'
 import { Toaster } from 'react-hot-toast'
+import AdminHomePage from './pages/home/adminHomePage'
+import HomePage from './pages/home/homePage'
 
 export default function App(){
 
