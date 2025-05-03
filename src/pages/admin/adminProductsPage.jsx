@@ -12,24 +12,13 @@ export default function AdminProductsPage() {
   useEffect(() => {
 
     if(!productLoaded){
-      axios.get(import.meta.env.VITE_BACKEND_URL+"/api/products" , {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },})
-        .then((res) => {
-          console.log("Fetched products:", res.data);  
+      axios.get(import.meta.env.VITE_BACKEND_URL+"/api/products").then((res) => {
           setProducts(res.data.list);
+          console.log(res.data);
           setproductLoaded(true)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch products:", error);
-          // Optional: You can set default products or show an error message
         });
-    }
-     
-    
-    
-  }, []);
+    } 
+  }, [productLoaded]);
   
 
   return (
@@ -75,7 +64,7 @@ export default function AdminProductsPage() {
                       const token = localStorage.getItem
                       ("token");
 
-                      axios.delete(`http://localhost:5000/api/products/${product.productId}`,{
+                      axios.delete(import.meta.env.VITE_BACKEND_URL+`/api/products/${product.productId}`,{
                         headers : {
                           Authorization : `Bearer ${token}`,
                         },
