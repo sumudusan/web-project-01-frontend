@@ -4,6 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 const key = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqc3Zjc2htYmRzem9xYndqbGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczODc4NzgsImV4cCI6MjA1Mjk2Mzg3OH0.4lGHfH4Dr8Yqq9NFl4xkZCC7Yhrj8lj6MioJ7UzUT1o`
 const url = "https://cjsvcshmbdszoqbwjlin.supabase.co"
 
+//create the connection with frontend and the supabase.
+const supabase = createClient(url,key)
+       
 export default function uploadMediaToSupabase(file){
     return new Promise((resolve, reject)=>{
         if(file==null){
@@ -13,12 +16,10 @@ export default function uploadMediaToSupabase(file){
         //check the extensions is jpg or png.
         const extension = fileName.split(".")[fileName.split(".").length - 1]
 
-      
-       //create the connection with frontend and the supabase.
-       const supabase = createClient(url,key)
 
        const timestamp = new Date().getTime()
-       fileName = timestamp + file.name+ "." + extension
+       fileName = `${timestamp}-${file.name}`;
+
 
        //"images" is the bucket name what we have made on the supabase.
 //"file.name" represent what will name be.
