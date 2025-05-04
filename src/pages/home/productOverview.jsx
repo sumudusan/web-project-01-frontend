@@ -31,7 +31,10 @@ export default function ProductOverview() {
       });
   }, []);
 
-  
+  function onAddToCartClick(){
+    addToCart(product.productId)
+    toast.success(product.productId+" Add to Cart")
+  }
 
 
 
@@ -78,7 +81,8 @@ export default function ProductOverview() {
             <p className="text-lg text-gray-600 line-clamp-3">
               {product.description}
             </p>
-            
+            <button onClick={onAddToCartClick} className="p-2 text-white rounded-lg bg-accent">Add to cart</button>
+
           </div>
         </div>
       )}
