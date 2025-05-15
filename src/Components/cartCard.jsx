@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { deleteItem } from "../Utils/cartFunction";
+import { deleteItem } from ".././utils/cartFunction";
 
 export default function CartCard(props) {
   const productId = props.productId;
   const qty = props.qty;
 
   const [product, setProduct] = useState(null);
-  const [loaded, setLoadede] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!loaded) {
@@ -17,7 +17,7 @@ export default function CartCard(props) {
           if (response.data != null) {
             setProduct(response.data);
             console.log(response.data);
-            setLoadede(true);
+            setLoaded(true);
           } else {
             deleteItem(productId);
           }
