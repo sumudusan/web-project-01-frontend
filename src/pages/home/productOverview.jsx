@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductNotFound from "./productNotFound";
 // import ImageSlider from "../components/imageSlider";
-import { addToCart } from "../Utils/cartFunction";
+
 import toast from "react-hot-toast";
+import { addToCart } from "../../utils/cartFunction";
+import ImageSlider from "../../Components/imageSlider";
 
 export default function ProductOverview() {
   const params = useParams();
@@ -33,7 +35,7 @@ export default function ProductOverview() {
 
   function onAddToCartClick(){
     addToCart(product.productId)
-    toast.success(product.productId+" Add to Cart")
+    toast.success(product.productId+" Added to Cart")
   }
 
 
@@ -57,18 +59,17 @@ export default function ProductOverview() {
               )}
               <span>{"LKR" + product.lastPrice}</span>
             </p>
-          <div className="w-[100%] lg:h-full lg:w-[35%] border-[3px] bg-red-700">
-            {/* <ImageSlider images={product.images}/> */}
-            <h1>askas jskdjld</h1>
-            <h1>sdjisdjisjd</h1>
-          </div>
+         <div className="w-full lg:w-[35%] border-2 border-gray-200 rounded-lg shadow-md p-2 bg-white">
+         <ImageSlider images={product.images} />
+         </div>
+
 
           <div className="h-full p-4 lg:w-[65%]">
             <h1 className="hidden text-3xl font-bold text-gray-800 lg:block md:block">
               {product.productName}
             </h1>
             <h1 className="text-3xl font-bold text-gray-500">
-              {product.altNames.join(" ")}
+              {product.altNames.join(" | ")}
             </h1>
             <p className="hidden text-xl text-gray-600 lg:block">
               {product.price > product.lastPrice && (
@@ -76,13 +77,12 @@ export default function ProductOverview() {
                   LKR.{product.price}
                 </span>
               )}
-              <span>{"LKR" + product.lastPrice}</span>
+              <span>{"LKR." + product.lastPrice}</span>
             </p>
             <p className="text-lg text-gray-600 line-clamp-3">
               {product.description}
             </p>
-            <button onClick={onAddToCartClick} className="p-2 text-white rounded-lg bg-accent">Add to cart</button>
-
+            <button onClick={onAddToCartClick} className="p-2 text-white rounded-lg bg-accent hover:cursor-pointer bg-amber-500">Add to cart</button>
           </div>
         </div>
       )}

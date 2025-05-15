@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { loadCart } from "../Utils/cartFunction";
-import CartCard from "../components/cartCard";
+import { loadCart } from "../../utils/cartFunction"
+import CartCard from "../../Components/cartCard"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -54,6 +54,7 @@ export default function Cart() {
           );
         })}
       </table>
+      <button className="bg-amber-400 text-white rounded-xl w-[300px] p-2 hover:bg-amber-600">Checkoout</button>
       <h1 className="text-3xl font-bold text-accent">
         Total: LKR. {labeledTotal.toFixed(2)}
       </h1>
