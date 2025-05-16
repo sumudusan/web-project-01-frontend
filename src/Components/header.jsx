@@ -1,16 +1,37 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { useState } from "react";
+import NavSlider from "./navSlider";
 
-export default function Header(){
-    return(
-        <header className=" w-full h-[100px] bg-white relative flex justify-center items-center">
-            <img src="/logo.png" className="h-full rounded-full cursor-pointer absolute left-[10px]"/>
-            <div className="h-full flex items-center w-[600px] justify-between">
-            <Link to="/" className="font-bold text-xl hover:border-b-2 border-b-amber-400 ">Home</Link>
-            <Link to="/products" className="font-bold text-xl hover:border-b-2 border-b-amber-400 ">Products</Link>
-            <Link to="/cart" className="font-bold text-xl hover:border-b-2 border-b-amber-400 ">Cart</Link>
-            <Link to="/about" className="font-bold text-xl hover:border-b-2 border-b-amber-400 ">About Us</Link>
-            <Link to="/contact" className="font-bold text-xl hover:border-b-2 border-b-amber-400 ">Contact Us</Link>
-            </div>
-        </header>
-    )
+export default function Header() {
+  const [isSliderOpen, setIsSliderOpen] = useState(false);
+
+  return (
+    <>
+      {isSliderOpen && (
+        <NavSlider
+          closeSlider={() => {
+            setIsSliderOpen(false);
+          }}
+        />
+      )}
+      <header className="bg-white border-[1px] relative flex border-black w-full h-[70px] justify-center items-center">
+        <img src="/logo.png" className="h-[90%] rounded-full cursor-pointer absolute left-[10px]"/>
+        <RxHamburgerMenu onClick={() => {setIsSliderOpen(true);}}
+          className="text-3xl absolute right-[10px] lg:hidden cursor-pointer text-[#be843d]"
+        />
+
+        <div className="items-center w-[500px] justify-between hidden h-full lg:flex ">
+          <Link to="/"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Home{" "}</Link>
+          <Link to="/products" className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Products{" "}</Link>
+          <Link to="/about" className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}About Us{" "}</Link>
+          <Link to="/contact"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Contact Us{" "}</Link>
+          <Link to="/cart"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Cart{" "}</Link>
+        </div>
+        <div className="absolute items-center justify-center hidden h-full p-2 gap-x-6 right-[15px] lg:flex">
+          <Link to="/login"><button className="px-6 py-1 font-semibold transition-all duration-300 border border-orange-400 rounded-lg shadow-md bg-primary text-accent backdrop-blur-lg hover:bg-orange-500/30">Login</button></Link>
+        </div>
+      </header>
+    </>
+  );
 }
