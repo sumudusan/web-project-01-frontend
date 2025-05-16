@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,} from "react";
 import { loadCart } from "../../utils/cartFunction"
 import CartCard from "../../Components/cartCard"
 import axios from "axios";
@@ -26,6 +26,14 @@ export default function Cart() {
       });
   }, []);
 
+    function onOrderCheckoutClick() {
+    navigate("/shipping",{
+      state : {
+        items : loadCart()
+      }
+    })
+
+  }
 
   return (
     <div className="flex flex-col items-end w-full h-full overflow-y-scroll bg-white ">
@@ -61,6 +69,12 @@ export default function Cart() {
     <h1 className="text-3xl font-bold text-accent">
       Grand Total: LKR. {total.toFixed(2)}
     </h1>
+       <button
+        onClick={onOrderCheckoutClick}
+        className="bg-red-400 text-white p-2 rounded-lg w-[300px]"
+      >
+        Checkout
+      </button>
   </>
 )}
 
