@@ -15,18 +15,14 @@ export default function Cart() {
     setCart(loadCart());
     console.log(loadCart());
 
-    axios
-      .post(import.meta.env.VITE_BACKEND_URL + "/api/orders/quote", {
+    axios.post(import.meta.env.VITE_BACKEND_URL + "/api/orders/quote", {
         orderedItems: loadCart(),
       })
       .then((res) => {
         // setTotal(res.data)
         console.log(res.data);
-        if(res.data.total != null){
-          setTotal(res.data.total);
-          setLabeledTotal(res.data.labeledTotal);
-        }
-
+       setTotal(res.data.total)
+       setLabeledTotal(res.data.labeledTotal)
       });
   }, []);
 
@@ -56,14 +52,16 @@ export default function Cart() {
       </table>
       <button className="bg-amber-400 text-white rounded-xl w-[300px] p-2 hover:bg-amber-600">Checkoout</button>
       <h1 className="text-3xl font-bold text-accent">
-        Total: LKR. {labeledTotal.toFixed(2)}
-      </h1>
-      <h1 className="text-3xl font-bold text-accent">
-        Discount: LKR. {(labeledTotal - total).toFixed(2)}
-      </h1>
-      <h1 className="text-3xl font-bold text-accent">
-        Grand Total: LKR. {total.toFixed(2)}
-      </h1>
+         Total: LKR. {(labeledTotal ?? 0).toFixed(2)}
+       </h1>
+       <h1 className="text-3xl font-bold text-accent">
+         Discount: LKR. {(labeledTotal - total || 0).toFixed(2)}
+       </h1>
+       <h1 className="text-3xl font-bold text-accent">
+         Grand Total: LKR. {(total ?? 0).toFixed(2)}
+       </h1>
+
+
 
      
     </div>
