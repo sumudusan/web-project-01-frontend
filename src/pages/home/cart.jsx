@@ -51,13 +51,13 @@ export default function Cart() {
         })}
       </table>
       <button className="bg-amber-400 text-white rounded-xl w-[300px] p-2 hover:bg-amber-600">Checkoout</button>
-      <h1 className="text-3xl font-bold text-accent">
+      <h1 className="text-3xl font-bold text-amber-400">
          Total: LKR. {(labeledTotal ?? 0).toFixed(2)}
        </h1>
-       <h1 className="text-3xl font-bold text-accent">
+       <h1 className="text-3xl font-bold text-amber-400">
          Discount: LKR. {(labeledTotal - total || 0).toFixed(2)}
        </h1>
-       <h1 className="text-3xl font-bold text-accent">
+       <h1 className="text-3xl font-bold text-amber-400">
          Grand Total: LKR. {(total ?? 0).toFixed(2)}
        </h1>
 

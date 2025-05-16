@@ -82,7 +82,7 @@ export default function ProductOverview() {
             <p className="text-lg text-gray-600 line-clamp-3">
               {product.description}
             </p>
-            <button onClick={onAddToCartClick} className="p-2 text-white rounded-lg bg-accent hover:cursor-pointer bg-amber-500">Add to cart</button>
+            <button onClick={onAddToCartClick} className="p-2 text-white rounded-lg bg-amber-400 hover:cursor-pointer bg-amber-500">Add to cart</button>
           </div>
         </div>
       )}
