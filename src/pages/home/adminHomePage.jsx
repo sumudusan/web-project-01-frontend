@@ -3,6 +3,7 @@ import { BsBoxSeam, BsCart4, BsGraphUp, BsPerson } from "react-icons/bs"
 import AddProductForm from "../admin/addProductForm"
 import AdminProductsPage from "../admin/adminProductsPage"
 import EditProductsForm from "../admin/editProductForm"
+import AdminOrdersPage from "../admin/adminOrderPage"
 
 export default function AdminHomePage(){
 
@@ -15,14 +16,14 @@ export default function AdminHomePage(){
                 <Link className="flex flex-row mb-4 text-white items-center" to ="/admin/customers"><BsPerson className="mr-2"/> Customers</Link>
             </div>
             
-            <div className="bg-red-600 w-[80%] h-screen">
+            <div className="bg-white w-[80%] h-screen">
               <Routes>
                <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
                <Route path="/products" element={<AdminProductsPage/>}/>
                <Route path="/products/addProduct" element={<AddProductForm/>}/>
                <Route path="/products/editProduct" element={<EditProductsForm/>}/>
-               <Route path="/orders" element={<h1>Orders</h1>}/>
                <Route path="/customers" element={<h1>Customers</h1>}/>
+               <Route path="/orders" element={<AdminOrdersPage/>}/>
                <Route path="/*" element={<h1>404 not found the admin page</h1>}/>
               </Routes>    
             </div>
