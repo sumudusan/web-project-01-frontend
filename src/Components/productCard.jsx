@@ -1,36 +1,30 @@
-import { Link } from "react-router-dom";
-
-/* eslint-disable react/prop-types */
-export default function Productcard(props) {
-  const product = props.product;
+import { Link } from "react-router-dom"; // Fix import
+export default function Productcard({ product }) {
+  if (!product) return null;
 
   return (
     <Link to={`/productInfo/${product.productId}`}>
-      <div className="w-[300px] h-[450px] bg-white m-4 rounded-xl shadow-lg shadow-gray-500 hover:shadow-gray-300 hover:border-[3px] overflow-hidden flex flex-col">
+      <div className="w-[300px] h-[450px] bg-surface rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 border border-primary">
         <img
           src={product.images?.[0] || "/placeholder.jpg"}
           alt={product.name || "Product Image"}
-          className="object-cover w-full h-[60%]"
+          className="w-full h-[60%] object-cover"
         />
-        <div className="max-h-[40%] h-[35%] p-4 flex flex-col justify-between">
-          <h1 className="text-3xl font-bold text-center">{product.productName}</h1>
-          <h2 className="text-center text-gray-400">{product.productId}</h2>
-
+        <div className="h-[40%] p-4 flex flex-col justify-between text-text">
+          <h1 className="text-2xl font-bold text-center text-heading">{product.productName}</h1>
+          <h2 className="text-sm text-center text-accent">{product.productId}</h2>
           {typeof product.lastPrice === "number" ? (
-            <p className="text-xl font-semibold text-left">
-              LKR.{product.lastPrice.toFixed(2)}
+            <p className="text-xl font-semibold text-primary text-center">
+              LKR {product.lastPrice.toFixed(2)}
             </p>
           ) : (
-            <p className="text-xl text-red-500 text-left">Price not available</p>
+            <p className="text-xl text-red-500 text-center">Price not available</p>
           )}
-
-          {typeof product.price === "number" &&
-            typeof product.lastPrice === "number" &&
-            product.lastPrice < product.price && (
-              <p className="text-xl font-semibold text-left text-gray-500 line-through">
-                LKR.{product.price.toFixed(2)}
-              </p>
-            )}
+          {product.price > product.lastPrice && (
+            <p className="text-sm line-through text-gray-400 text-center">
+              LKR {product.price.toFixed(2)}
+            </p>
+          )}
         </div>
       </div>
     </Link>

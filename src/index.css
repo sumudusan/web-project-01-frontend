@@ -1,2 +1,15 @@
-@import "tailwindcss";
+@import "tailwindcss"; 
+
+
+@theme {
+
+        --color-primary: #C9B037;           /* Gold - buttons, highlights*/
+        --color-accent: #E7A1A1;       /* Rose Gold - hover, icons*/
+        --color-background: #FAF4EB;   /* Deep Black - site background*/
+        --color-surface: #FFFDF9;      /* Charcoal - cards or sections*/
+        --color-text: #4B3F3F;         /*Champagne - regular text*/
+        --color-heading: #5C3D2E;       /* Ivory - main headings*/ 
+}
+
+
 

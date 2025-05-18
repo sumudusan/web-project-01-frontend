@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useState } from "react";
 import NavSlider from "./navSlider";
 
 export default function Header() {
@@ -8,30 +8,47 @@ export default function Header() {
 
   return (
     <>
-      {isSliderOpen && (
-        <NavSlider
-          closeSlider={() => {
-            setIsSliderOpen(false);
-          }}
-        />
-      )}
-      <header className="bg-white border-[1px] relative flex border-black w-full h-[70px] justify-center items-center">
-        <img src="/logo.png" className="h-[90%] rounded-full cursor-pointer absolute left-[10px]"/>
-        <RxHamburgerMenu onClick={() => {setIsSliderOpen(true);}}
-          className="text-3xl absolute right-[10px] lg:hidden cursor-pointer text-[#be843d]"
+      {isSliderOpen && <NavSlider closeSlider={() => setIsSliderOpen(false)} />}
+
+      <header className="fixed top-0 left-0 z-50 bg-surface border-b border-primary w-full h-[70px] flex justify-between items-center px-4 shadow-md">
+        <img
+          src="/logo.jpg"
+          alt="Logo"
+          className="h-[90%] rounded-full cursor-pointer"
         />
 
-        <div className="items-center w-[500px] justify-between hidden h-full lg:flex ">
-          <Link to="/"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Home{" "}</Link>
-          <Link to="/products" className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Products{" "}</Link>
-          <Link to="/about" className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}About Us{" "}</Link>
-          <Link to="/contact"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Contact Us{" "}</Link>
-          <Link to="/cart"className="text-xl text-[#be843d] font-bold hover:border-b border-b-[#926228]">{" "}Cart{" "}</Link>
+        <div className="hidden lg:flex gap-6">
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/products">Products</NavLink>
+          <NavLink to="/about">About Us</NavLink>
+          <NavLink to="/contact">Contact Us</NavLink>
+          <NavLink to="/cart">Cart</NavLink>
         </div>
-        <div className="absolute items-center justify-center hidden h-full p-2 gap-x-6 right-[15px] lg:flex">
-          <Link to="/login"><button className="px-6 py-1 font-semibold transition-all duration-300 border border-orange-400 rounded-lg shadow-md bg-primary text-accent backdrop-blur-lg hover:bg-orange-500/30">Login</button></Link>
+
+        <div className="hidden lg:block">
+          <Link to="/login">
+            <button className="px-6 py-2 font-semibold bg-accent text-white rounded-lg shadow hover:bg-[#d88c8c] transition">
+              Login
+            </button>
+          </Link>
         </div>
+
+        <RxHamburgerMenu
+          onClick={() => setIsSliderOpen(true)}
+          className="text-3xl text-primary cursor-pointer lg:hidden"
+        />
       </header>
     </>
+  );
+}
+
+function NavLink({ to, children }) {
+  return (
+    <Link
+      to={to}
+      className="text-lg font-bold text-primary hover:border-b-2 border-heading pb-1 transition"
+    >
+      {children}
+    </Link>
   );
 }

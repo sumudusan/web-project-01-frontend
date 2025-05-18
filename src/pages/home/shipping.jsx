@@ -1,9 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-// import CartCard from "../../components/cartCard";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CartCard from "../../Components/cartCard"
+import CartCard from "../../Components/cartCard"; // ✅ Corrected import
 
 export default function ShippingPage() {
   const location = useLocation();
@@ -39,18 +38,10 @@ export default function ShippingPage() {
   }, [cart, navigate]);
 
   function validateInputs() {
-    if (!name.trim()) {
-      toast.error("Please enter your name.");
-      return false;
-    }
-    if (!address.trim()) {
-      toast.error("Please enter your address.");
-      return false;
-    }
-    if (!phone.trim() || !/^\d{10}$/.test(phone)) {
-      toast.error("Please enter a valid 10-digit phone number.");
-      return false;
-    }
+    if (!name.trim()) return toast.error("Please enter your name.");
+    if (!address.trim()) return toast.error("Please enter your address.");
+    if (!phone.trim() || !/^\d{10}$/.test(phone))
+      return toast.error("Please enter a valid 10-digit phone number.");
     return true;
   }
 
@@ -65,20 +56,11 @@ export default function ShippingPage() {
 
     axios
       .post(
-        import.meta.env.VITE_BACKEND_URL + "/api/orders",
-        {
-          orderedItems: cart,
-          name,
-          address,
-          phone,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
+        `${import.meta.env.VITE_BACKEND_URL}/api/orders/createOrder`,
+        { orderedItems: cart, name, address, phone },
+        { headers: { Authorization: "Bearer " + token } }
       )
-      .then((res) => {
+      .then(() => {
         toast.success("Order placed successfully!");
         navigate("/orders");
       })
@@ -88,54 +70,55 @@ export default function ShippingPage() {
       });
   }
 
-  if (!cart) {
-    return null;
-  }
+  if (!cart) return null;
 
   return (
-    <div className="w-full h-full p-4 bg-gray-100">
-      <div className="w-full max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-md">
-        <h1 className="mb-4 text-2xl font-bold">Shipping Details</h1>
-        <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Name</label>
-          <input
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Address</label>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-md"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter your address"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Phone</label>
-          <input
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Enter your phone number"
-          />
+    <div className="w-full h-full bg-white p-4 flex justify-center">
+      <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md space-y-6">
+        <h1 className="text-2xl font-bold text-gray-800">Shipping Details</h1>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block font-medium text-gray-700">Name</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
+          </div>
+          <div>
+            <label className="block font-medium text-gray-700">Address</label>
+            <textarea
+              className="w-full p-2 border border-gray-300 rounded-md"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter your address"
+            />
+          </div>
+          <div>
+            <label className="block font-medium text-gray-700">Phone</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter your phone number"
+            />
+          </div>
         </div>
 
-        <h2 className="mt-6 mb-4 text-xl font-bold">Order Summary</h2>
-        <table className="w-full mb-4 border border-collapse border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-2 border border-gray-300">Image</th>
-              <th className="p-2 border border-gray-300">Product Name</th>
-              <th className="p-2 border border-gray-300">Product ID</th>
-              <th className="p-2 border border-gray-300">Qty</th>
-              <th className="p-2 border border-gray-300">Price</th>
-              <th className="p-2 border border-gray-300">Total</th>
+        <h2 className="text-xl font-bold text-gray-800">Order Summary</h2>
+        <table className="w-full border border-gray-300 text-left">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="p-2">Image</th>
+              <th className="p-2">Product Name</th>
+              <th className="p-2">Product ID</th>
+              <th className="p-2">Qty</th>
+              <th className="p-2">Price</th>
+              <th className="p-2">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -148,17 +131,21 @@ export default function ShippingPage() {
             ))}
           </tbody>
         </table>
-        <h1 className="mb-2 text-lg font-bold text-gray-700">
-          Total: LKR. {labeledTotal.toFixed(2)}
-        </h1>
-        <h1 className="mb-2 text-lg font-bold text-gray-700">
-          Discount: LKR. {(labeledTotal - total).toFixed(2)}
-        </h1>
-        <h1 className="mb-4 text-lg font-bold text-gray-700">
-          Grand Total: LKR. {total.toFixed(2)}
-        </h1>
+
+        <div className="space-y-1 text-right">
+          <h1 className="text-xl font-semibold text-gray-700">
+            Total: LKR {labeledTotal.toFixed(2)}
+          </h1>
+          <h1 className="text-xl font-semibold text-red-500">
+            Discount: LKR {(labeledTotal - total).toFixed(2)}
+          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Grand Total: LKR {total.toFixed(2)}
+          </h1>
+        </div>
+
         <button
-          className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-500"
+          className="w-full px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 font-semibold"
           onClick={createOrder}
         >
           Checkout

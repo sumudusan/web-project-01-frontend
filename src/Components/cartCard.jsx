@@ -1,11 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { deleteItem } from ".././utils/cartFunction";
+import axios from "axios";
+import { deleteItem } from "../utils/cartFunction";
 
-export default function CartCard(props) {
-  const productId = props.productId;
-  const qty = props.qty;
-
+export default function CartCard({ productId, qty }) {
   const [product, setProduct] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -14,33 +11,35 @@ export default function CartCard(props) {
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/products/${productId}`)
         .then((response) => {
-          if (response.data != null) {
+          if (response.data) {
             setProduct(response.data);
-            console.log(response.data);
             setLoaded(true);
           } else {
-            deleteItem(productId);
+            deleteItem(productId); // Remove invalid product
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.error("Failed to fetch product:", error);
         });
     }
-  }, []);
+  }, [productId, loaded]);
+
+  if (!product) return null;
 
   return (
-    <tr className="cursor-pointer hover:bg-red-500 hover:text-white">
-      <td className="">
+    <tr className="hover:bg-accent transition duration-200 text-text">
+      <td className="p-2 text-center">
         <img
-          src={product?.images[0]}
-          className="w-[90px] h-[90px] object-cover mx-auto"
+          src={product.images?.[0]}
+          alt={product.productName}
+          className="w-[90px] h-auto object-cover mx-auto rounded"
         />
       </td>
-      <td className="text-center">{product?.productName}</td>
-      <td className="text-center">{productId}</td>
-      <td className="text-center">{qty}</td>
-      <td className="text-center">LKR. {product?.lastPrice.toFixed(2)}</td>
-      <td className="text-center">{(product?.lastPrice * qty).toFixed(2)}</td>
+      <td className="p-2 text-center">{product.productName}</td>
+      <td className="p-2 text-center">{productId}</td>
+      <td className="p-2 text-center">{qty}</td>
+      <td className="p-2 text-center">LKR {product.lastPrice.toFixed(2)}</td>
+      <td className="p-2 text-center">LKR {(product.lastPrice * qty).toFixed(2)}</td>
     </tr>
   );
 }
