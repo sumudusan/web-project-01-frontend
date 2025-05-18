@@ -34,7 +34,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="flex flex-col items-end w-full h-full overflow-y-auto bg-background p-4 text-text">
+    <div className="flex flex-col items-end w-full h-full overflow-y-auto bg-background px-4 py-6 text-text">
       <table className="w-full border border-accent text-left bg-surface rounded shadow">
         <thead className="bg-accent text-background">
           <tr>

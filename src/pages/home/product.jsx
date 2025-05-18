@@ -52,13 +52,13 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="w-full min-h-screen pt-20 bg-background text-text">
+    <div className="w-full min-h-screen pt-6 bg-background text-text">
       {/* Search Bar */}
       <div className="flex justify-center mb-4">
         <input
           type="text"
           placeholder="Search products..."
-          className="w-[50%] p-3 rounded border border-primary bg-surface text-text focus:outline-none shadow-md"
+          className="w-[50%] p-2 rounded border border-primary bg-surface text-text focus:outline-none shadow-md"
           onChange={handleSearch}
           value={query}
         />
@@ -73,7 +73,7 @@ export default function ProductPage() {
 
       {/* Product Cards */}
       {loadingStatus === "loaded" && (
-        <div className="flex flex-wrap justify-center gap-6 px-4">
+        <div className="flex flex-wrap justify-center gap-4 px-4">
           {products.map((product) => (
             <Productcard key={product.productId} product={product} />
           ))}

@@ -11,7 +11,10 @@ import MyOrdersPage from "./orders";
 export default function HomePage(){
     return(
         <div className="h-screen w-full bg-background text-text">
-            <Header/>
+            <div className="">
+                <Header/>
+            </div>
+            
          <div className="w-full h-full pt-16 px-4">
              <Routes path="/*">
             <Route path="/" element={ <h1

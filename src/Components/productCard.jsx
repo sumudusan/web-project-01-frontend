@@ -4,15 +4,15 @@ export default function Productcard({ product }) {
 
   return (
     <Link to={`/productInfo/${product.productId}`}>
-      <div className="w-[300px] h-[450px] bg-surface rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 border border-primary">
+      <div className="w-[225px] h-[400px] bg-surface rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 border border-primary">
         <img
           src={product.images?.[0] || "/placeholder.jpg"}
           alt={product.name || "Product Image"}
-          className="w-full h-[60%] object-cover"
+          className="w-full h-[70%] object-cover"
         />
-        <div className="h-[40%] p-4 flex flex-col justify-between text-text">
-          <h1 className="text-2xl font-bold text-center text-heading">{product.productName}</h1>
-          <h2 className="text-sm text-center text-accent">{product.productId}</h2>
+        <div className="h-[30%] px-4 py-2 flex flex-col justify-between text-text">
+          <h1 className="text-xl px-4 font-bold text-center text-heading ">{product.productName}</h1>
+          {/*<h2 className="text-sm text-center text-accent">{product.productId}</h2>*/}
           {typeof product.lastPrice === "number" ? (
             <p className="text-xl font-semibold text-primary text-center">
               LKR {product.lastPrice.toFixed(2)}
