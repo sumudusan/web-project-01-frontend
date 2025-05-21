@@ -3,13 +3,18 @@
 
 @theme {
 
-        --color-primary: #C9B037;           /* Gold - buttons, highlights*/
-        --color-accent: #E7A1A1;       /* Rose Gold - hover, icons*/
-        --color-background: #FAF4EB;   /* Deep Black - site background*/
-        --color-surface: #FFFDF9;      /* Charcoal - cards or sections*/
-        --color-text: #4B3F3F;         /*Champagne - regular text*/
-        --color-heading: #5C3D2E;       /* Ivory - main headings*/ 
+    --color-primary: #C9B037;           /* Gold - buttons, highlights */
+    --color-accent: #be843d;            /* New Accent - hover, icons */
+    --color-background: #FAF4EB;        /* Deep Black - site background */
+    --color-surface: #FFFDF9;           /* Charcoal - cards or sections */
+    --color-text: #4B3F3F;              /* Champagne - regular text */
+    --color-heading: #5C3D2E;           /* Ivory - main headings */ 
 }
 
 
 
+@layer components {
+  .primary-btn {
+    @apply bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#a86e2d] hover:!scale-110 duration-300;
+  }
+}

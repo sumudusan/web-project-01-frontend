@@ -80,7 +80,7 @@ export default function ProductOverview() {
 
             <button
               onClick={onAddToCartClick}
-              className="px-6 py-2 rounded-md text-white bg-[#be843d] hover:bg-[#a86e2d] transition-all shadow-md"
+              className="px-6 py-2 rounded-md text-white bg-accent hover:bg-[#a86e2d] transition-all shadow-md"
             >
               Add to Cart
             </button>
