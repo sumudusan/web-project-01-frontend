@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { RxHamburgerMenu } from "react-icons/rx";
-import NavSlider from "./navSlider";
+import React, {  useState } from "react";
 import logo from "../assets/logo.jpg"
+import { NavLink, Link } from "react-router";
+import { RxHamburgerMenu } from "react-icons/rx";
+
 export default function Header() {
   const [isSliderOpen, setIsSliderOpen] = useState(false);
 
@@ -10,17 +10,18 @@ export default function Header() {
     <>
       {isSliderOpen && <NavSlider closeSlider={() => setIsSliderOpen(false)} />}
 
-      <header className="fixed top-0 left-0 z-50 bg-surface border-b border-primary w-full h-[70px] flex  items-center px-4 shadow-md">
+      <header className="bg-surface border-b border-primary w-full h-[70px] flex items-center px-4 shadow-md">
         <img
           src={logo}
           alt="Logo"
           className="h-[90%] rounded-full cursor-pointer"
         />
 
-        <div className="pl-2 ">
+        <div className="pl-2">
           <h1 className="text-heading font-extrabold text-xl font-serif">crystal clear</h1>
-          <span className=" font-extrabold  font-serif">beauty products</span>
+          <span className="font-extrabold font-serif">beauty products</span>
         </div>
+
         <div className="hidden lg:flex gap-6 justify-center px-17">
           <NavLink to="/">Home</NavLink>
           <NavLink to="/products">Products</NavLink>
@@ -43,16 +44,5 @@ export default function Header() {
         />
       </header>
     </>
-  );
-}
-
-function NavLink({ to, children }) {
-  return (
-    <Link
-      to={to}
-      className="text-lg font-bold text-primary hover:border-b-2 border-heading pb-1 transition"
-    >
-      {children}
-    </Link>
   );
 }
