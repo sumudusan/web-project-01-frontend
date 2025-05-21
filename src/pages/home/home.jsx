@@ -59,12 +59,12 @@ export default function Home(){
                 </div>
 
         {/* Raw 3 */}
-                <div className="grid grid-cols-2 py-5">
+                <div className="grid grid-cols-2 py-6">
                 {/* Image 1 */}
                   <img
                    src={img1}
                    alt="Image1"
-                   className="w-full"
+                   className="w-full h-full"
                   />
 
                 {/* Text */}
@@ -88,7 +88,7 @@ export default function Home(){
 
         {/* Raw 4 */}  
                    <div className="flex flex-col items-center py-10">
-                    <h1 className="text-heading text-3xl mb-5 font-bold">New Arrivals</h1>
+                    <h1 className="text-heading text-3xl font-bold">New Arrivals</h1>
                     <Testimonial/>
                    </div>    
               </div>
