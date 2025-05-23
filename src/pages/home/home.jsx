@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import img1 from "../../assets/th.jpeg"
 import Testimonial from "../../Components/testimonial";
+
 export default function Home(){
 
     const [products, setProducts] = useState([]);

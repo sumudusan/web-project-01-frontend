@@ -10,6 +10,7 @@ import MyOrdersPage from "./orders";
 import Home from "./home";
 import AboutUs from "./aboutUs";
 import Footer from "../../Components/footer";
+import ContactUs from "./contact";
 
 export default function HomePage() {
   const [showHeader, setShowHeader] = useState(true);
@@ -57,6 +58,7 @@ export default function HomePage() {
           <Route path="/shipping" element={<ShippingPage />} />
           <Route path="/orders" element={<MyOrdersPage />} />
           <Route path="/about" element={<AboutUs/>}/>
+          <Route path="contact" element={<ContactUs/>}/>
         </Routes>
       </div>
       <div className="">
