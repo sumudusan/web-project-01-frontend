@@ -27,7 +27,7 @@ export default function Home(){
 
     return(
         <div>
-            <div className="relative grid grid-rows-4">
+            <div className="relative grid ">
         {/* Raw 1 */}
                 {/* Banner image */}
                 <img
@@ -49,7 +49,7 @@ export default function Home(){
 
         {/* Raw 2 */}
                 {/* show Products */}
-                <div className="py-4 flex flex-col items-center text-center">
+                <div className="py-14 flex flex-col items-center text-center">
                   <h1 className="text-heading text-3xl font-bold mb-7">Trending Products</h1>
                   <div className="flex flex-wrap justify-center gap-4 px-4">
                     {products.map((product) => (
