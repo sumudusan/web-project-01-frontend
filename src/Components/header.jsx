@@ -34,7 +34,7 @@ export default function Header() {
 
         <div className="hidden lg:block pl-38">
           <Link to="/login">
-            <button className="px-6 py-2 font-semibold bg-accent text-white rounded-lg shadow hover:bg-primary transition">
+            <button className="px-6 py-2 font-semibold bg-primary text-white rounded-lg shadow hover:bg-accent transition">
               Login
             </button>
           </Link>

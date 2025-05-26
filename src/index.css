@@ -15,6 +15,6 @@
 
 @layer components {
   .primary-btn {
-    @apply bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#a86e2d] hover:!scale-110 duration-300;
+    @apply bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-accent hover:!scale-110 duration-300;
   }
 }

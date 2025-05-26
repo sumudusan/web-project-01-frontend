@@ -4,7 +4,7 @@ import banner from "../../assets/banner.jpg";
 import Productcard from "../../Components/productCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import img1 from "../../assets/th.jpeg"
+import img1 from "../../assets/products/42.jpg"
 import Testimonial from "../../Components/testimonial";
 
 export default function Home(){

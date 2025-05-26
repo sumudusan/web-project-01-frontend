@@ -6,21 +6,21 @@ import "slick-carousel/slick/slick-theme.css";
 const testimonialData = [
   {
     id: 1,
-    name: "Tharindu Lakshan",
-    location: "Sri Lanka",
-    image: "/src/assets/1.jpeg",
+    name: "Hydrating Facial Serum",
+    description: "A lightweight hydrating facial serum enriched with hyaluronic acid and vitamin C to brighten and moisturize skin for a youthful glow.",
+    image: "/src/assets/products/41.jpg",
   },
   {
     id: 2,
-    name: "John Doe",
-    location: "USA",
-    image: "/src/assets/2.jpeg",
+    name: "Aqua Dew Hydrating Face Cream",
+    description: "A lightweight gel-cream that delivers intense hydration without greasiness. Formulated with hyaluronic acid, aloe vera, and marine minerals to soothe and plump the skin. Ideal for all skin types, especially dry and sensitive skin.",
+    image: "/src/assets/products/31.jpg",
   },
   {
     id: 3,
-    name: "Jane Smith",
-    location: "Canada",
-    image: "/src/assets/3.jpeg",
+    name: "Cucumber Cooling Eye Gel",
+    description: "A refreshing under-eye gel with cucumber extract and caffeine to reduce puffiness and dark circles. Perfect for tired eyes and morning use.",
+    image: "/src/assets/products/81.jpg",
   },
 ];
 
@@ -55,7 +55,7 @@ const Testimonial = () => {
                 <h3 className="text-xl font-semibold text-[#C9B037]">
                   {review.name}
                 </h3>
-                <span className="text-sm text-[#4B3F3F]">{review.location}</span>
+                <span className="text-sm text-[#4B3F3F] px-40">{review.description}</span>
               </div>
             </div>
           ))}

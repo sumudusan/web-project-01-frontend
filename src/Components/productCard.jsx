@@ -4,7 +4,7 @@ export default function Productcard({ product }) {
 
   return (
     <Link to={`/productInfo/${product.productId}`}>
-      <div className="w-[225px] h-[400px] bg-surface rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 border border-primary">
+      <div className="w-[225px] h-[400px] bg-surface rounded-xl shadow-lg hover:shadow-xl hover:!scale-103  overflow-hidden transition-all duration-300 border border-primary">
         <img
           src={product.images?.[0] || "/placeholder.jpg"}
           alt={product.name || "Product Image"}
