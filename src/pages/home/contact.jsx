@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      {/*await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/contact/send`, form);*/}
+      await axios.post("http://localhost:5000/api/contact/send", form)
+      toast.success("Message sent successfully!");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      toast.error("Failed to send message");
+      console.error(err);
+    }
+  };
+
   return (
     <div className="bg-background min-h-screen py-12 px-4 sm:px-10 lg:px-24 text-text">
       <div className="max-w-5xl mx-auto">
@@ -35,11 +56,15 @@ const ContactUs = () => {
           </div>
 
           {/* Contact Form */}
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block font-medium mb-1 text-text">Name</label>
               <input
                 type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
                 placeholder="Your Name"
                 className="w-full px-4 py-2 border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-[#be843d] bg-white"
               />
@@ -48,6 +73,10 @@ const ContactUs = () => {
               <label className="block font-medium mb-1 text-text">Email</label>
               <input
                 type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
                 placeholder="you@example.com"
                 className="w-full px-4 py-2 border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-[#be843d] bg-white"
               />
@@ -55,6 +84,10 @@ const ContactUs = () => {
             <div>
               <label className="block font-medium mb-1 text-heading">Message</label>
               <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                required
                 rows="4"
                 placeholder="Write your message..."
                 className="w-full px-4 py-2 border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-[#be843d] bg-white"
