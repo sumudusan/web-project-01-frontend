@@ -7,99 +7,109 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
-  const [productLoaded , setproductLoaded] = useState (false)
+  const [productLoaded, setProductLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-
-    if(!productLoaded){
-      axios.get(import.meta.env.VITE_BACKEND_URL+"/api/products").then((res) => {
+    if (!productLoaded) {
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/products")
+        .then((res) => {
           setProducts(res.data.products);
-          console.log(res.data);
-          setproductLoaded(true)
+          setProductLoaded(true);
         });
-    } 
+    }
   }, [productLoaded]);
 
-  const navigate = useNavigate()
-  
-
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-    <Link to = "/admin/products/addProduct" className="absolute right-[25px] bottom-[25px]
-    text-[25px] bg-blue-500 hover:bg-blue-300 p-5 rounded-xl" ><FaPlus/></Link>
+    <div className="p-4 bg-background min-h-screen relative">
+      {/* Floating Add Button */}
+      <Link
+        to="/admin/products/addProduct"
+        className="fixed right-6 bottom-6 text-white bg-primary hover:bg-accent p-4 rounded-full shadow-lg transition"
+        title="Add Product"
+      >
+        <FaPlus size={20} />
+      </Link>
 
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Admin Products</h2>
-      {//this is make for show the page is loading or not. 
-      //we use the 'productLoaded' useState for it.
-      //if 'div 1' has loaded show it.else show 'div 2 '.
-        productLoaded?
-        //div 1 👇 
+      <h2 className="text-3xl font-bold mb-6 text-heading text-center">Admin Products</h2>
+
+      {productLoaded ? (
+        // Product Table
         <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Product ID</th>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Name</th>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Price</th>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Last Price</th>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Stock</th>
-              <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Description</th>
-              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-700">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {products.map((product, index) => (
-              <tr key={index} className="hover:bg-gray-50 transition">
-                <td className="py-3 px-4 border-b">{product.productId}</td>
-                <td className="py-3 px-4 border-b">{product.productName}</td>
-                <td className="py-3 px-4 border-b">Rs. {product.price}</td>
-                <td className="py-3 px-4 border-b line-through text-gray-500">Rs. {product.lastPrice}</td>
-                <td className="py-3 px-4 border-b">{product.stock}</td>
-                <td className="py-3 px-4 border-b max-w-xs truncate">{product.description}</td>
-                <td className="py-3 px-4 border-b text-center">
-                  <div className="flex justify-center gap-3 text-lg text-gray-600">
-                    
-                    <button className="hover:text-red-600"
-                    title="Delete"
-                    onClick={()=>{alert(product.productId)
-                      const token = localStorage.getItem
-                      ("token");
-
-                      axios.delete(import.meta.env.VITE_BACKEND_URL+`/api/products/${product.productId}`,{
-                        headers : {
-                          Authorization : `Bearer ${token}`,
-                        },
-                      }).then((res)=>{
-                        console.log(res.data);
-                        toast.success("Product deleted successfully");
-                        setproductLoaded(false)
-                      });
-                    }}
-                    >
-                      <FaTrash />
-                    </button>
-                    <button className="hover:text-blue-600"
-                    title="Edit"
-                    onClick={()=>{
-                      navigate("/admin/products/editProduct", {state: {product : product}});
-                    }}
-                    >
-                      <FaPencil />
-                    </button>
-                  </div>
-                </td>
+          <table className="min-w-full bg-surface border border-gray-300 shadow rounded-xl">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Product ID</th>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Name</th>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Price</th>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Last Price</th>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Stock</th>
+                <th className="py-3 px-4 border-b text-left text-sm font-semibold text-text">Description</th>
+                <th className="py-3 px-4 border-b text-center text-sm font-semibold text-text">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>:
-        //div 2 👇
-        <div className="w-full h-full flex justify-center items-center">
-           <div className="w-[60px] h-[60px] border-[2px] border-gray-200 border-b-blue-400 animate-spin rounded-full"></div>
+            </thead>
+            <tbody>
+              {products.map((product, index) => (
+                <tr key={index} className="hover:bg-gray-50 transition">
+                  <td className="py-3 px-4 border-b text-text">{product.productId}</td>
+                  <td className="py-3 px-4 border-b text-text">{product.productName}</td>
+                  <td className="py-3 px-4 border-b text-text">Rs. {product.price}</td>
+                  <td className="py-3 px-4 border-b text-gray-500 line-through">Rs. {product.lastPrice}</td>
+                  <td className="py-3 px-4 border-b text-text">{product.stock}</td>
+                  <td className="py-3 px-4 border-b max-w-xs truncate text-text">{product.description}</td>
+                  <td className="py-3 px-4 border-b text-center">
+                    <div className="flex justify-center gap-4 text-lg text-gray-600">
+                      <button
+                        className="hover:text-red-600"
+                        title="Delete"
+                        onClick={() => {
+                          const confirmDelete = confirm(`Delete ${product.productName}?`);
+                          if (!confirmDelete) return;
+
+                          const token = localStorage.getItem("token");
+
+                          axios
+                            .delete(import.meta.env.VITE_BACKEND_URL + `/api/products/${product.productId}`, {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                              },
+                            })
+                            .then((res) => {
+                              toast.success("Product deleted successfully");
+                              setProductLoaded(false);
+                            })
+                            .catch(() => {
+                              toast.error("Failed to delete product");
+                            });
+                        }}
+                      >
+                        <FaTrash />
+                      </button>
+                      <button
+                        className="hover:text-blue-600"
+                        title="Edit"
+                        onClick={() => {
+                          navigate("/admin/products/editProduct", {
+                            state: { product: product },
+                          });
+                        }}
+                      >
+                        <FaPencil />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        
-    }
+      ) : (
+        // Loading Spinner
+        <div className="flex justify-center items-center h-64">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent animate-spin rounded-full" />
+        </div>
+      )}
     </div>
   );
 }

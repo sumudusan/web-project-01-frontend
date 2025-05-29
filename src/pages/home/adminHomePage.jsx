@@ -7,6 +7,7 @@ import AdminOrdersPage from "../admin/adminOrderPage"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { AdminCustomerPage } from "../admin/admincustomerpage"
 
 export default function AdminHomePage(){
 
@@ -37,35 +38,61 @@ export default function AdminHomePage(){
         })
     },[])
 
-    return(
-        <div className="bg-blue-200 w-full h-screen flex">
-            <div className="bg-blue-500 w-[20%] h-screen flex flex-col items-center py-4">
-                <Link className="flex flex-row mb-4 text-white items-center" to ="/admin/dashboard"><BsGraphUp className="mr-2"/> Dashboard</Link>
-                <Link className="flex flex-row mb-4 text-white items-center" to ="/admin/products"><BsBoxSeam className="mr-2"/> Products</Link>
-                <Link className="flex flex-row mb-4 text-white items-center" to ="/admin/orders"><BsCart4 className="mr-2"/> Orders</Link>
-                <Link className="flex flex-row mb-4 text-white items-center" to ="/admin/customers"><BsPerson className="mr-2"/> Customers</Link>
-            </div>
-            
-            <div className="bg-white w-[80%] h-screen">
-              {user!=null && <Routes>
-               <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
-               <Route path="/products" element={<AdminProductsPage/>}/>
-               <Route path="/products/addProduct" element={<AddProductForm/>}/>
-               <Route path="/products/editProduct" element={<EditProductsForm/>}/>
-               <Route path="/customers" element={<h1>Customers</h1>}/>
-               <Route path="/orders" element={<AdminOrdersPage/>}/>
-               <Route path="/*" element={<h1>404 not found the admin page</h1>}/>
-              </Routes>}
-              {
-                user==null && 
-                <div className="w-full h-full flex justify-center items-center">
-                    {/* animating loading page*/ }
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-400">
 
-                    </div>
-                </div>
-              }    
-            </div>
-        </div>
-    )
+  return (
+    <div className="bg-background w-full h-screen flex">
+      {/* Sidebar */}
+      <div className="bg-primary w-[20%] h-screen flex flex-col items-center py-6 shadow-lg">
+        <h2 className="text-white text-2xl font-bold mb-8">Admin Panel</h2>
+        <Link
+          className="flex flex-row items-center text-white mb-5 hover:text-accent transition"
+          to="/admin/dashboard"
+        >
+          <BsGraphUp className="mr-2" />
+          Dashboard
+        </Link>
+        <Link
+          className="flex flex-row items-center text-white mb-5 hover:text-accent transition"
+          to="/admin/products"
+        >
+          <BsBoxSeam className="mr-2" />
+          Products
+        </Link>
+        <Link
+          className="flex flex-row items-center text-white mb-5 hover:text-accent transition"
+          to="/admin/orders"
+        >
+          <BsCart4 className="mr-2" />
+          Orders
+        </Link>
+        <Link
+          className="flex flex-row items-center text-white mb-5 hover:text-accent transition"
+          to="/admin/customers"
+        >
+          <BsPerson className="mr-2" />
+          Customers
+        </Link>
+      </div>
+
+      {/* Main Content */}
+      <div className="bg-surface w-[80%] h-screen p-6 overflow-y-auto">
+        {user != null ? (
+          <Routes>
+            <Route path="/dashboard" element={<h1 className="text-heading text-2xl font-semibold">Dashboard</h1>} />
+            <Route path="/products" element={<AdminProductsPage />} />
+            <Route path="/products/addProduct" element={<AddProductForm />} />
+            <Route path="/products/editProduct" element={<EditProductsForm />} />
+            <Route path="/customers" element={<AdminCustomerPage/>} />
+            <Route path="/orders" element={<AdminOrdersPage />} />
+            <Route path="/*" element={<h1 className="text-red-600 text-xl font-semibold">404 — Page Not Found</h1>} />
+          </Routes>
+        ) : (
+          <div className="w-full h-full flex justify-center items-center">
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-primary border-t-transparent" />
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
+
