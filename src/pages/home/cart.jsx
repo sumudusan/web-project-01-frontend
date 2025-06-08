@@ -23,9 +23,16 @@ export default function Cart() {
           setTotal(res.data.total);
           setLabeledTotal(res.data.labeledTotal);
         })
-        .catch((err) => console.error("Quote error:", err));
-    }
-  }, []);
+  function handleDeleteFromCart(productId) {
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`http://localhost:5000/api/orders/cart/remove/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        setCart((prev) => prev.filter((item) => item.productId !== productId));
+      });
+  }
 
   function onOrderCheckoutClick() {
     navigate("/shipping", {
@@ -44,11 +51,17 @@ export default function Cart() {
             <th className="p-2">Qty</th>
             <th className="p-2">Price</th>
             <th className="p-2">Total</th>
+            <th className="p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {cart.map((item) => (
-            <CartCard key={item.productId} productId={item.productId} qty={item.qty} />
+            <CartCard
+              key={item.productId}
+              productId={item.productId}
+              qty={item.qty}
+              onDelete={handleDeleteFromCart}
+            />
           ))}
         </tbody>
       </table>
