@@ -1,36 +1,45 @@
-export function loadCart() {
-    const cart = localStorage.getItem("cart");
-    console.log(localStorage.getItem("cart"));
-  
-    if (cart != null) {
-      return JSON.parse(cart);
-    } else {
-      return [];
-    }
+import axios from "axios";
+
+// Add item to cart
+export async function addToCart(productId, qty = 1) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/login";
+    return;
   }
-  
-  export function addToCart(productId, qty = 1) {
+
     if (!Number.isFinite(qty)) {
       console.error("Invalid quantity:", qty);
       return;
     }
   
-    console.log("Adding to cart:", { productId, qty });
-    const cart = loadCart();
-    console.log("Current cart:", cart);
-  
-    const index = cart.findIndex((item) => {
-      return item.productId == productId;
-    });
-    console.log(index);
-    if (index == -1) {//if there is not added product in previouse to cart add it.
-      cart.push({ productId, qty });
-    } else {
-      const newQty = cart[index].qty + qty;
-      if (newQty <= 0) {
-        cart.splice(index, 1);
-      } else {
-        cart[index].qty = newQty;
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/orders/cart/save",
+      {
+        cartItems: [{ productId, qty }],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Product added to cart:", response.data);
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+  }
+}
+
+// Delete item from cart
+export async function deleteItem(productId) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/login";
+    return;
       }
     }
     saveCart(cart);

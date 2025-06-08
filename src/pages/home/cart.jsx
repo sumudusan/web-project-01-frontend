@@ -1,28 +1,62 @@
 import { useEffect, useState } from "react";
-import { loadCart } from "../../utils/cartFunction";
-import CartCard from "../../Components/cartCard";
 import axios from "axios";
+import CartCard from "../../Components/cartCard";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [labeledTotal, setLabeledTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [hasTried, setHasTried] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadedCart = loadCart();
-    setCart(loadedCart);
+    const token = localStorage.getItem("token");
 
-    if (loadedCart.length > 0) {
-      axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/quote`, {
-          orderedItems: loadedCart,
-        })
-        .then((res) => {
-          setTotal(res.data.total);
-          setLabeledTotal(res.data.labeledTotal);
-        })
+    if (!token) {
+      if (!hasTried) {
+        setTimeout(() => setHasTried(true), 300);
+      } else {
+        navigate("/login", { state: { from: "/cart" } });
+      }
+      return;
+    }
+
+    axios
+      .get("http://localhost:5000/api/orders/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const savedCart = res.data;
+        setCart(savedCart);
+
+        if (savedCart.length > 0) {
+          axios
+            .post(
+              "http://localhost:5000/api/orders/quote",
+              { orderedItems: savedCart },
+              { headers: { Authorization: `Bearer ${token}` } }
+            )
+            .then((res) => {
+              setTotal(res.data.total);
+              setLabeledTotal(res.data.labeledTotal);
+            });
+        }
+      })
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          navigate("/login");
+        } else {
+          console.error("Cart fetch error:", err);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [hasTried, navigate]);
+
   function handleDeleteFromCart(productId) {
     const token = localStorage.getItem("token");
     axios
@@ -34,11 +68,39 @@ export default function Cart() {
       });
   }
 
-  function onOrderCheckoutClick() {
+ function onOrderCheckoutClick() {
+  const token = localStorage.getItem("token");
+
+  // Clear cart in backend
+  axios.post(
+    "http://localhost:5000/api/orders/cart/save",
+    { cartItems: [] },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  )
+  .then(() => {
+    // Clear frontend cart state
+    setCart([]);
+    setTotal(0);
+    setLabeledTotal(0);
+    console.log("cle")
+    // Navigate to shipping
     navigate("/shipping", {
       state: { items: cart },
     });
-  }
+  })
+  .catch((err) => {
+    console.error("Failed to clear cart:", err);
+    // Proceed anyway if needed
+    navigate("/shipping", {
+      state: { items: cart },
+    });
+  });
+}
+
+
+  if (loading) return <div className="text-center py-8 text-heading">Loading cart...</div>;
 
   return (
     <div className="flex flex-col items-end w-full h-full overflow-y-auto bg-background px-4 py-6 text-text">
@@ -66,17 +128,13 @@ export default function Cart() {
         </tbody>
       </table>
 
-      {typeof labeledTotal === "number" && typeof total === "number" && cart.length > 0 && (
+      {cart.length > 0 && (
         <div className="w-full mt-4 text-right space-y-2">
-          <h1 className="text-xl font-semibold text-heading">
-            Total: LKR {labeledTotal.toFixed(2)}
-          </h1>
+          <h1 className="text-xl font-semibold text-heading">Total: LKR {labeledTotal.toFixed(2)}</h1>
           <h1 className="text-xl font-semibold text-red-600">
             Discount: LKR {(labeledTotal - total).toFixed(2)}
           </h1>
-          <h1 className="text-2xl font-bold text-heading">
-            Grand Total: LKR {total.toFixed(2)}
-          </h1>
+          <h1 className="text-2xl font-bold text-heading">Grand Total: LKR {total.toFixed(2)}</h1>
 
           <button
             onClick={onOrderCheckoutClick}
