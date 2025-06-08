@@ -9,11 +9,11 @@ export async function addToCart(productId, qty = 1) {
     return;
   }
 
-    if (!Number.isFinite(qty)) {
-      console.error("Invalid quantity:", qty);
-      return;
-    }
-  
+  if (!Number.isFinite(qty)) {
+    console.error("Invalid quantity:", qty);
+    return;
+  }
+
   try {
     const response = await axios.post(
       "http://localhost:5000/api/orders/cart/save",
@@ -40,27 +40,20 @@ export async function deleteItem(productId) {
   if (!token) {
     window.location.href = "/login";
     return;
+  }
+
+  try {
+    const response = await axios.delete(
+      `http://localhost:5000/api/orders/cart/remove/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    }
-    saveCart(cart);
-    console.log("Updated cart:", cart);
-  }
+    );
 
-  export function saveCart(cart){
-    //stringify uses for convert string to json or convert json to string
-    localStorage.setItem("cart", JSON.stringify(cart))
+    console.log("Deleted item from cart:", response.data);
+  } catch (error) {
+    console.error("Failed to delete item from cart:", error);
   }
-   
-  export function deleteItem(productId){
-    const cart =loadCart()
-
-    const index = cart.findIndex(
-      (item)=>{
-        return item.productId==productId
-      }
-    )
-
-    if(index!=-1){
-      cart.splice(index,1)
-    }
-  }
+}
