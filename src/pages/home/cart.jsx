@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]); // 👈 New
   const [total, setTotal] = useState(0);
   const [labeledTotal, setLabeledTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -12,9 +13,28 @@ export default function Cart() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
+  // Update totals whenever selectedItems changes
+  useEffect(() => {
+    if (selectedItems.length > 0) {
+      axios
+        .post(
+          "http://localhost:5000/api/orders/quote",
+          { orderedItems: selectedItems },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((res) => {
+          setTotal(res.data.total);
+          setLabeledTotal(res.data.labeledTotal);
+        });
+    } else {
+      setTotal(0);
+      setLabeledTotal(0);
+    }
+  }, [selectedItems]);
+
+  useEffect(() => {
     if (!token) {
       if (!hasTried) {
         setTimeout(() => setHasTried(true), 300);
@@ -28,23 +48,7 @@ export default function Cart() {
       .get("http://localhost:5000/api/orders/cart", {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => {
-        const savedCart = res.data;
-        setCart(savedCart);
-
-        if (savedCart.length > 0) {
-          axios
-            .post(
-              "http://localhost:5000/api/orders/quote",
-              { orderedItems: savedCart },
-              { headers: { Authorization: `Bearer ${token}` } }
-            )
-            .then((res) => {
-              setTotal(res.data.total);
-              setLabeledTotal(res.data.labeledTotal);
-            });
-        }
-      })
+      .then((res) => setCart(res.data))
       .catch((err) => {
         if (err.response?.status === 401) {
           navigate("/login");
@@ -52,53 +56,41 @@ export default function Cart() {
           console.error("Cart fetch error:", err);
         }
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, [hasTried, navigate]);
 
+  function handleSelect(productId) {
+    const item = cart.find((item) => item.productId === productId);
+    const alreadySelected = selectedItems.find((i) => i.productId === productId);
+
+    if (alreadySelected) {
+      setSelectedItems((prev) => prev.filter((i) => i.productId !== productId));
+    } else {
+      setSelectedItems((prev) => [...prev, item]);
+    }
+  }
+
   function handleDeleteFromCart(productId) {
-    const token = localStorage.getItem("token");
     axios
       .delete(`http://localhost:5000/api/orders/cart/remove/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setCart((prev) => prev.filter((item) => item.productId !== productId));
+        setSelectedItems((prev) => prev.filter((item) => item.productId !== productId));
       });
   }
 
- function onOrderCheckoutClick() {
-  const token = localStorage.getItem("token");
-
-  // Clear cart in backend
-  axios.post(
-    "http://localhost:5000/api/orders/cart/save",
-    { cartItems: [] },
-    {
-      headers: { Authorization: `Bearer ${token}` },
+  function onOrderCheckoutClick() {
+    if (selectedItems.length === 0) {
+      alert("Please select items to checkout.");
+      return;
     }
-  )
-  .then(() => {
-    // Clear frontend cart state
-    setCart([]);
-    setTotal(0);
-    setLabeledTotal(0);
-    console.log("cle")
-    // Navigate to shipping
-    navigate("/shipping", {
-      state: { items: cart },
-    });
-  })
-  .catch((err) => {
-    console.error("Failed to clear cart:", err);
-    // Proceed anyway if needed
-    navigate("/shipping", {
-      state: { items: cart },
-    });
-  });
-}
 
+    navigate("/shipping", {
+      state: { items: selectedItems },
+    });
+  }
 
   if (loading) return <div className="text-center py-8 text-heading">Loading cart...</div>;
 
@@ -107,6 +99,7 @@ export default function Cart() {
       <table className="w-full border border-accent text-left bg-surface rounded shadow">
         <thead className="bg-primary text-background">
           <tr>
+            <th className="p-2">Select</th>
             <th className="p-2">Image</th>
             <th className="p-2">Product Name</th>
             <th className="p-2">Product ID</th>
@@ -118,17 +111,25 @@ export default function Cart() {
         </thead>
         <tbody>
           {cart.map((item) => (
-            <CartCard
-              key={item.productId}
-              productId={item.productId}
-              qty={item.qty}
-              onDelete={handleDeleteFromCart}
-            />
+            <tr key={item.productId}>
+              <td className="p-2">
+                <input
+                  type="checkbox"
+                  checked={!!selectedItems.find((i) => i.productId === item.productId)}
+                  onChange={() => handleSelect(item.productId)}
+                />
+              </td>
+              <CartCard
+                productId={item.productId}
+                qty={item.qty}
+                onDelete={handleDeleteFromCart}
+              />
+            </tr>
           ))}
         </tbody>
       </table>
 
-      {cart.length > 0 && (
+      {selectedItems.length > 0 && (
         <div className="w-full mt-4 text-right space-y-2">
           <h1 className="text-xl font-semibold text-heading">Total: LKR {labeledTotal.toFixed(2)}</h1>
           <h1 className="text-xl font-semibold text-red-600">
